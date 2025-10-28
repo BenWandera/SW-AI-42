@@ -1,0 +1,242 @@
+{
+    "high_priority_locations": [
+        {
+            "location_id": 96,
+            "latitude": 0.35535202058635296,
+            "longitude": 32.64728573363365,
+            "predicted_volume": 0.964192271232605,
+            "location_type": "Commercial",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 81,
+            "latitude": 0.3474744916328535,
+            "longitude": 32.647496458881896,
+            "predicted_volume": 0.9599409103393555,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 92,
+            "latitude": 0.3501471254039732,
+            "longitude": 32.64315104722364,
+            "predicted_volume": 0.9554309844970703,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 80,
+            "latitude": 0.325911361326376,
+            "longitude": 32.64046277170184,
+            "predicted_volume": 0.9500637054443359,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 89,
+            "latitude": 0.34030364470781127,
+            "longitude": 32.6319643294005,
+            "predicted_volume": 0.9460349082946777,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 91,
+            "latitude": 0.3210907140355824,
+            "longitude": 32.64316628232414,
+            "predicted_volume": 0.935713529586792,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 85,
+            "latitude": 0.3193890078222994,
+            "longitude": 32.64740977588461,
+            "predicted_volume": 0.9302629232406616,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 82,
+            "latitude": 0.3646150003320357,
+            "longitude": 32.637114504122366,
+            "predicted_volume": 0.9297603368759155,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 93,
+            "latitude": 0.35388539726827123,
+            "longitude": 32.634131102221694,
+            "predicted_volume": 0.9070147275924683,
+            "location_type": "Residential",
+            "dominant_waste_type": "organic",
+            "recommendation": "Implement twice weekly collection with focus on organic waste management"
+        },
+        {
+            "location_id": 86,
+            "latitude": 0.3479290046167002,
+            "longitude": 32.62825076343898,
+            "predicted_volume": 0.8930126428604126,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 97,
+            "latitude": 0.31899861702789073,
+            "longitude": 32.62983618126913,
+            "predicted_volume": 0.8887639045715332,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 83,
+            "latitude": 0.3165895692319477,
+            "longitude": 32.630271037936694,
+            "predicted_volume": 0.8755221366882324,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 88,
+            "latitude": 0.3627119760681849,
+            "longitude": 32.627448802554774,
+            "predicted_volume": 0.8735920190811157,
+            "location_type": "Commercial",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 62,
+            "latitude": 0.2677955109291628,
+            "longitude": 32.59621798667586,
+            "predicted_volume": 0.7828261852264404,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 70,
+            "latitude": 0.2504234463135995,
+            "longitude": 32.6053139257562,
+            "predicted_volume": 0.7828261852264404,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 67,
+            "latitude": 0.2585336340815954,
+            "longitude": 32.592860963692395,
+            "predicted_volume": 0.7819228172302246,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 73,
+            "latitude": 0.2669338947987716,
+            "longitude": 32.62756416053804,
+            "predicted_volume": 0.7747682332992554,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 60,
+            "latitude": 0.27085507274242204,
+            "longitude": 32.62221560574033,
+            "predicted_volume": 0.7747180461883545,
+            "location_type": "Commercial",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 65,
+            "latitude": 0.2721415037486501,
+            "longitude": 32.61923174412892,
+            "predicted_volume": 0.7747180461883545,
+            "location_type": "Residential",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        },
+        {
+            "location_id": 68,
+            "latitude": 0.2717027210648291,
+            "longitude": 32.62002192814723,
+            "predicted_volume": 0.7747180461883545,
+            "location_type": "Commercial",
+            "dominant_waste_type": "plastic",
+            "recommendation": "Implement twice weekly collection with focus on plastic waste management"
+        }
+    ],
+    "waste_type_insights": {
+        "plastic": {
+            "average_probability": 0.5588811039924622,
+            "high_prevalence_locations": 100,
+            "collection_strategy": "Implement recycling bins and partner with plastic recyclers"
+        },
+        "paper": {
+            "average_probability": 0.521525502204895,
+            "high_prevalence_locations": 100,
+            "collection_strategy": "Set up paper collection points for recycling"
+        },
+        "metal": {
+            "average_probability": 0.48826417326927185,
+            "high_prevalence_locations": 18,
+            "collection_strategy": "Establish metal scrap collection centers"
+        },
+        "glass": {
+            "average_probability": 0.4435501992702484,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Set up safe glass collection and recycling stations"
+        },
+        "organic": {
+            "average_probability": 0.5174586772918701,
+            "high_prevalence_locations": 100,
+            "collection_strategy": "Consider composting programs and organic waste processing"
+        },
+        "cardboard": {
+            "average_probability": 0.46124497056007385,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Partner with cardboard recyclers for regular pickup"
+        },
+        "textile": {
+            "average_probability": 0.471330463886261,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Organize textile donation and recycling drives"
+        },
+        "electronic": {
+            "average_probability": 0.47813570499420166,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Create e-waste collection centers with proper disposal"
+        },
+        "hazardous": {
+            "average_probability": 0.4314962327480316,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Implement specialized hazardous waste handling protocols"
+        },
+        "other": {
+            "average_probability": 0.43558308482170105,
+            "high_prevalence_locations": 0,
+            "collection_strategy": "Assess and categorize for appropriate disposal methods"
+        }
+    },
+    "collection_optimization": {
+        "total_daily_volume_kg": 59.836734771728516,
+        "average_volume_per_location": 0.5983673334121704,
+        "recommended_collection_frequency": "Every 2-3 days with flexible scheduling",
+        "estimated_trucks_needed": 1
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "model": "MobileViT-Small",
+  "dataset": "RealWaste",
+  "data_split": {
+    "train": 70,
+    "val": 20,
+    "test": 10
+  },
+  "total_images": 9504,
+  "training_time_minutes": 785.2254447380702,
+  "best_validation_accuracy": 88.85383806519454,
+  "final_test_accuracy": 88.42105263157895,
+  "class_names": [
+    "Cardboard",
+    "Food Organics",
+    "Glass",
+    "Metal",
+    "Miscellaneous Trash",
+    "Paper",
+    "Plastic",
+    "Textile Trash",
+    "Vegetation"
+  ],
+  "classification_report": "                     precision    recall  f1-score   support\n\n          Cardboard      0.940     0.848     0.891        92\n      Food Organics      0.884     0.927     0.905        82\n              Glass      0.899     0.952     0.925        84\n              Metal      0.892     0.886     0.889       158\nMiscellaneous Trash      0.819     0.778     0.798        99\n              Paper      0.877     0.930     0.903       100\n            Plastic      0.876     0.880     0.878       184\n      Textile Trash      0.836     0.875     0.855        64\n         Vegetation      0.940     0.897     0.918        87\n\n           accuracy                          0.884       950\n          macro avg      0.885     0.886     0.885       950\n       weighted avg      0.885     0.884     0.884       950\n"
+}

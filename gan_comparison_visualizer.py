@@ -1,0 +1,377 @@
+"""
+GAN Real vs Fake Comparison Visualization
+Shows side-by-side comparison of real waste images and GAN-generated synthetic images
+"""
+
+import torch
+import torch.nn as nn
+from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+from pathlib import Path
+
+# Add GAN model path
+import sys
+sys.path.append(r'C:\Users\Z-BOOK\OneDrive\Documents\DATASETS')
+from waste_gan_output.waste_gan_trainer import Generator
+
+
+def load_trained_gan(model_path='waste_gan_output/models/wastegan_latest.pth'):
+    """Load the trained GAN generator"""
+    
+    print(f"🤖 Loading trained GAN model...")
+    
+    device = torch.device('cpu')
+    
+    # Load checkpoint
+    checkpoint = torch.load(model_path, map_location=device, weights_only=False)
+    
+    # Get latent dimension
+    latent_dim = checkpoint.get('latent_dim', 100)
+    
+    # Create generator
+    generator = Generator(latent_dim=latent_dim)
+    generator.load_state_dict(checkpoint['generator'])
+    generator.eval()
+    
+    print(f"✅ GAN model loaded (latent_dim: {latent_dim})")
+    
+    return generator, latent_dim, device
+
+
+def load_real_images(realwaste_path='../realwaste/RealWaste', num_images=8):
+    """Load random real waste images"""
+    
+    print(f"📸 Loading real waste images...")
+    
+    real_images = []
+    image_paths = []
+    
+    # Walk through RealWaste directory
+    for root, dirs, files in os.walk(realwaste_path):
+        for file in files:
+            if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                image_paths.append(os.path.join(root, file))
+    
+    # Randomly sample images
+    if len(image_paths) > num_images:
+        selected_paths = np.random.choice(image_paths, num_images, replace=False)
+    else:
+        selected_paths = image_paths[:num_images]
+    
+    # Load and resize images
+    for img_path in selected_paths:
+        try:
+            img = Image.open(img_path).convert('RGB')
+            img = img.resize((64, 64))  # Match GAN output size
+            real_images.append(np.array(img))
+        except Exception as e:
+            print(f"⚠️ Skipping {img_path}: {e}")
+            continue
+    
+    print(f"✅ Loaded {len(real_images)} real images")
+    
+    return real_images
+
+
+def generate_fake_images(generator, latent_dim, device, num_images=8):
+    """Generate synthetic images using trained GAN"""
+    
+    print(f"🎨 Generating synthetic images...")
+    
+    fake_images = []
+    
+    with torch.no_grad():
+        # Generate random noise
+        noise = torch.randn(num_images, latent_dim, 1, 1, device=device)
+        
+        # Generate images
+        generated = generator(noise)
+        
+        # Denormalize from [-1, 1] to [0, 1]
+        generated = (generated + 1) / 2.0
+        generated = torch.clamp(generated, 0, 1)
+        
+        # Convert to numpy arrays
+        for i in range(num_images):
+            img = generated[i].permute(1, 2, 0).cpu().numpy()
+            img = (img * 255).astype(np.uint8)
+            fake_images.append(img)
+    
+    print(f"✅ Generated {len(fake_images)} synthetic images")
+    
+    return fake_images
+
+
+def create_comparison_visualization(real_images, fake_images, save_path='gan_real_vs_fake_comparison.png'):
+    """Create side-by-side comparison of real and fake images"""
+    
+    print(f"📊 Creating comparison visualization...")
+    
+    num_pairs = min(len(real_images), len(fake_images))
+    
+    # Create figure with 2 rows (Real on top, Fake on bottom)
+    fig, axes = plt.subplots(2, num_pairs, figsize=(16, 5))
+    
+    if num_pairs == 1:
+        axes = axes.reshape(2, 1)
+    
+    # Plot real images (top row)
+    for idx in range(num_pairs):
+        ax = axes[0, idx]
+        ax.imshow(real_images[idx])
+        ax.axis('off')
+        
+        if idx == 0:
+            ax.set_title('REAL WASTE IMAGES', fontsize=12, fontweight='bold', 
+                        loc='left', pad=10, color='green')
+        
+        # Add border
+        for spine in ax.spines.values():
+            spine.set_edgecolor('green')
+            spine.set_linewidth(3)
+            spine.set_visible(True)
+    
+    # Plot fake images (bottom row)
+    for idx in range(num_pairs):
+        ax = axes[1, idx]
+        ax.imshow(fake_images[idx])
+        ax.axis('off')
+        
+        if idx == 0:
+            ax.set_title('GAN SYNTHETIC IMAGES', fontsize=12, fontweight='bold',
+                        loc='left', pad=10, color='blue')
+        
+        # Add border
+        for spine in ax.spines.values():
+            spine.set_edgecolor('blue')
+            spine.set_linewidth(3)
+            spine.set_visible(True)
+    
+    # Add main title
+    fig.suptitle('GAN Model: Real vs Synthetic Waste Images Comparison', 
+                fontsize=16, fontweight='bold', y=0.98)
+    
+    # Add legend/explanation
+    legend_text = (
+        "Top Row (Green): Real waste images from RealWaste dataset\n"
+        "Bottom Row (Blue): Synthetic images generated by trained GAN model\n"
+        "GAN trained for 30 epochs on 4,769 real waste images"
+    )
+    
+    fig.text(0.5, 0.02, legend_text, 
+            ha='center', va='bottom',
+            fontsize=10, style='italic',
+            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
+    
+    plt.tight_layout(rect=[0, 0.05, 1, 0.95])
+    
+    # Save figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"✅ Comparison saved to: {save_path}")
+    
+    plt.close()
+    
+    return save_path
+
+
+def create_detailed_comparison(real_images, fake_images, save_path='gan_detailed_comparison.png'):
+    """Create a more detailed comparison with individual image pairs"""
+    
+    print(f"📊 Creating detailed comparison...")
+    
+    num_pairs = min(len(real_images), len(fake_images), 4)  # Show 4 pairs
+    
+    # Create figure with pairs side by side
+    fig, axes = plt.subplots(num_pairs, 2, figsize=(8, 12))
+    
+    if num_pairs == 1:
+        axes = axes.reshape(1, 2)
+    
+    for pair_idx in range(num_pairs):
+        # Real image (left column)
+        ax_real = axes[pair_idx, 0]
+        ax_real.imshow(real_images[pair_idx])
+        ax_real.axis('off')
+        ax_real.set_title('REAL', fontsize=11, fontweight='bold', color='green')
+        
+        for spine in ax_real.spines.values():
+            spine.set_edgecolor('green')
+            spine.set_linewidth(3)
+            spine.set_visible(True)
+        
+        # Fake image (right column)
+        ax_fake = axes[pair_idx, 1]
+        ax_fake.imshow(fake_images[pair_idx])
+        ax_fake.axis('off')
+        ax_fake.set_title('SYNTHETIC (GAN)', fontsize=11, fontweight='bold', color='blue')
+        
+        for spine in ax_fake.spines.values():
+            spine.set_edgecolor('blue')
+            spine.set_linewidth(3)
+            spine.set_visible(True)
+        
+        # Add pair label
+        fig.text(0.02, 0.88 - (pair_idx * 0.22), f'Pair {pair_idx + 1}',
+                fontsize=12, fontweight='bold', rotation=90, va='center')
+    
+    # Add main title
+    fig.suptitle('GAN Real vs Synthetic: Side-by-Side Comparison', 
+                fontsize=16, fontweight='bold', y=0.995)
+    
+    # Add explanation
+    explanation = (
+        "Left Column: Real waste images from dataset\n"
+        "Right Column: GAN-generated synthetic images\n"
+        "Both images are 64×64 pixels\n"
+        "GAN model captures textures and patterns from real data"
+    )
+    
+    fig.text(0.5, 0.02, explanation,
+            ha='center', va='bottom',
+            fontsize=9,
+            bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.3))
+    
+    plt.tight_layout(rect=[0.05, 0.04, 1, 0.99])
+    
+    # Save figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"✅ Detailed comparison saved to: {save_path}")
+    
+    plt.close()
+    
+    return save_path
+
+
+def create_grid_comparison(real_images, fake_images, save_path='gan_grid_comparison.png'):
+    """Create a large grid showing many real vs fake examples"""
+    
+    print(f"📊 Creating grid comparison...")
+    
+    num_images = min(len(real_images), len(fake_images))
+    
+    # Create 2×8 grid (2 rows: real and fake, 8 columns)
+    fig = plt.figure(figsize=(18, 6))
+    
+    # Top section - Real images
+    fig.text(0.02, 0.75, 'REAL\nIMAGES', 
+            fontsize=14, fontweight='bold', color='green',
+            ha='left', va='center', rotation=0,
+            bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.5))
+    
+    for idx in range(num_images):
+        ax = plt.subplot(2, num_images, idx + 1)
+        ax.imshow(real_images[idx])
+        ax.axis('off')
+        
+        # Add green border
+        for spine in ax.spines.values():
+            spine.set_edgecolor('green')
+            spine.set_linewidth(2.5)
+            spine.set_visible(True)
+    
+    # Bottom section - Fake images
+    fig.text(0.02, 0.25, 'GAN\nSYNTHETIC', 
+            fontsize=14, fontweight='bold', color='blue',
+            ha='left', va='center', rotation=0,
+            bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.5))
+    
+    for idx in range(num_images):
+        ax = plt.subplot(2, num_images, num_images + idx + 1)
+        ax.imshow(fake_images[idx])
+        ax.axis('off')
+        
+        # Add blue border
+        for spine in ax.spines.values():
+            spine.set_edgecolor('blue')
+            spine.set_linewidth(2.5)
+            spine.set_visible(True)
+    
+    # Main title
+    plt.suptitle('GAN Training Results: Real Waste Images vs Generated Synthetic Images',
+                fontsize=18, fontweight='bold', y=0.98)
+    
+    # Stats box
+    stats_text = (
+        f"Dataset: {num_images} comparison pairs | "
+        f"Model: WasteGAN (30 epochs) | "
+        f"Resolution: 64×64 RGB | "
+        f"Training Data: 4,769 real images"
+    )
+    
+    fig.text(0.5, 0.01, stats_text,
+            ha='center', va='bottom',
+            fontsize=10, style='italic',
+            bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.2))
+    
+    plt.tight_layout(rect=[0.08, 0.03, 1, 0.96])
+    
+    # Save figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+    print(f"✅ Grid comparison saved to: {save_path}")
+    
+    plt.close()
+    
+    return save_path
+
+
+def main():
+    """Main execution function"""
+    
+    print("🚀 GAN Real vs Fake Comparison Visualization")
+    print("=" * 60)
+    
+    # Set paths
+    model_path = '../waste_gan_output/models/wastegan_latest.pth'
+    realwaste_path = '../realwaste/RealWaste'
+    
+    # Check if model exists
+    if not os.path.exists(model_path):
+        print(f"❌ GAN model not found: {model_path}")
+        print("Please train the GAN model first using waste_gan_trainer.py")
+        return
+    
+    # Load trained GAN
+    generator, latent_dim, device = load_trained_gan(model_path)
+    
+    # Load real images
+    real_images = load_real_images(realwaste_path, num_images=8)
+    
+    if len(real_images) == 0:
+        print("❌ No real images loaded. Check RealWaste path.")
+        return
+    
+    # Generate synthetic images
+    fake_images = generate_fake_images(generator, latent_dim, device, num_images=8)
+    
+    # Create visualizations
+    print(f"\n📊 Creating comparison visualizations...")
+    
+    # 1. Side-by-side comparison (2 rows)
+    comparison_path = create_comparison_visualization(real_images, fake_images,
+                                                     save_path='gan_real_vs_fake_comparison.png')
+    
+    # 2. Detailed pairs comparison
+    detailed_path = create_detailed_comparison(real_images, fake_images,
+                                              save_path='gan_detailed_comparison.png')
+    
+    # 3. Large grid comparison
+    grid_path = create_grid_comparison(real_images, fake_images,
+                                       save_path='gan_grid_comparison.png')
+    
+    print(f"\n✅ All comparisons completed!")
+    print(f"\n📁 Generated files:")
+    print(f"   1. {comparison_path}")
+    print(f"   2. {detailed_path}")
+    print(f"   3. {grid_path}")
+    
+    print(f"\n💡 Analysis:")
+    print(f"   • Real images show actual waste from RealWaste dataset")
+    print(f"   • Synthetic images demonstrate GAN's learned representations")
+    print(f"   • GAN captures textures, colors, and patterns from training data")
+    print(f"   • Useful for data augmentation and model training enhancement")
+
+
+if __name__ == "__main__":
+    main()

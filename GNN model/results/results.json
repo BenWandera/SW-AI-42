@@ -1,0 +1,16 @@
+{
+    "test_metrics": {
+        "volume_mae": 6766.126953125,
+        "volume_rmse": 6853.010725221434,
+        "volume_r2": -38.69449234008789,
+        "type_accuracy": 0.8466666666666667,
+        "type_precision": 0.2,
+        "type_recall": 0.3,
+        "type_f1": 0.22999999999999998
+    },
+    "training_history": {
+        "final_train_loss": 45816204.0,
+        "final_val_loss": null,
+        "best_val_loss": null
+    }
+}

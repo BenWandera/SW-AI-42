@@ -1,0 +1,539 @@
+{
+  "model_config": {
+    "_name_or_path": "vision-tinyllama-siglip-large/checkpoint-5900",
+    "architectures": [
+      "MM_LLMs"
+    ],
+    "auto_map": {
+      "AutoConfig": "modeling_vision.MM_LLMs_Config",
+      "AutoModel": "modeling_vision.MM_LLMs"
+    },
+    "image_config": {
+      "_name_or_path": "google/siglip-large-patch16-384",
+      "add_cross_attention": false,
+      "architectures": [
+        "SiglipModel"
+      ],
+      "bad_words_ids": null,
+      "begin_suppress_tokens": null,
+      "bos_token_id": null,
+      "chunk_size_feed_forward": 0,
+      "cross_attention_hidden_size": null,
+      "decoder_start_token_id": null,
+      "diversity_penalty": 0.0,
+      "do_sample": false,
+      "early_stopping": false,
+      "encoder_no_repeat_ngram_size": 0,
+      "eos_token_id": null,
+      "exponential_decay_length_penalty": null,
+      "finetuning_task": null,
+      "forced_bos_token_id": null,
+      "forced_eos_token_id": null,
+      "id2label": {
+        "0": "LABEL_0",
+        "1": "LABEL_1"
+      },
+      "initializer_factor": 1.0,
+      "is_decoder": false,
+      "is_encoder_decoder": false,
+      "label2id": {
+        "LABEL_0": 0,
+        "LABEL_1": 1
+      },
+      "length_penalty": 1.0,
+      "max_length": 20,
+      "min_length": 0,
+      "model_type": "siglip",
+      "no_repeat_ngram_size": 0,
+      "num_beam_groups": 1,
+      "num_beams": 1,
+      "num_return_sequences": 1,
+      "output_attentions": false,
+      "output_hidden_states": false,
+      "output_scores": false,
+      "pad_token_id": null,
+      "prefix": null,
+      "problem_type": null,
+      "pruned_heads": {},
+      "remove_invalid_values": false,
+      "repetition_penalty": 1.0,
+      "return_dict": true,
+      "return_dict_in_generate": false,
+      "sep_token_id": null,
+      "suppress_tokens": null,
+      "task_specific_params": null,
+      "temperature": 1.0,
+      "text_config": {
+        "_name_or_path": "",
+        "add_cross_attention": false,
+        "architectures": null,
+        "attention_dropout": 0.0,
+        "bad_words_ids": null,
+        "begin_suppress_tokens": null,
+        "bos_token_id": 49406,
+        "chunk_size_feed_forward": 0,
+        "cross_attention_hidden_size": null,
+        "decoder_start_token_id": null,
+        "diversity_penalty": 0.0,
+        "do_sample": false,
+        "early_stopping": false,
+        "encoder_no_repeat_ngram_size": 0,
+        "eos_token_id": 49407,
+        "exponential_decay_length_penalty": null,
+        "finetuning_task": null,
+        "forced_bos_token_id": null,
+        "forced_eos_token_id": null,
+        "hidden_act": "gelu_pytorch_tanh",
+        "hidden_size": 1024,
+        "id2label": {
+          "0": "LABEL_0",
+          "1": "LABEL_1"
+        },
+        "intermediate_size": 4096,
+        "is_decoder": false,
+        "is_encoder_decoder": false,
+        "label2id": {
+          "LABEL_0": 0,
+          "LABEL_1": 1
+        },
+        "layer_norm_eps": 1e-06,
+        "length_penalty": 1.0,
+        "max_length": 20,
+        "max_position_embeddings": 64,
+        "min_length": 0,
+        "model_type": "siglip_text_model",
+        "no_repeat_ngram_size": 0,
+        "num_attention_heads": 16,
+        "num_beam_groups": 1,
+        "num_beams": 1,
+        "num_hidden_layers": 24,
+        "num_return_sequences": 1,
+        "output_attentions": false,
+        "output_hidden_states": false,
+        "output_scores": false,
+        "pad_token_id": 1,
+        "prefix": null,
+        "problem_type": null,
+        "pruned_heads": {},
+        "remove_invalid_values": false,
+        "repetition_penalty": 1.0,
+        "return_dict": true,
+        "return_dict_in_generate": false,
+        "sep_token_id": null,
+        "suppress_tokens": null,
+        "task_specific_params": null,
+        "temperature": 1.0,
+        "tf_legacy_loss": false,
+        "tie_encoder_decoder": false,
+        "tie_word_embeddings": true,
+        "tokenizer_class": null,
+        "top_k": 50,
+        "top_p": 1.0,
+        "torch_dtype": null,
+        "torchscript": false,
+        "typical_p": 1.0,
+        "use_bfloat16": false,
+        "vocab_size": 32000
+      },
+      "tf_legacy_loss": false,
+      "tie_encoder_decoder": false,
+      "tie_word_embeddings": true,
+      "tokenizer_class": null,
+      "top_k": 50,
+      "top_p": 1.0,
+      "torch_dtype": "float32",
+      "torchscript": false,
+      "typical_p": 1.0,
+      "use_bfloat16": false,
+      "vision_config": {
+        "_name_or_path": "",
+        "add_cross_attention": false,
+        "architectures": null,
+        "attention_dropout": 0.0,
+        "bad_words_ids": null,
+        "begin_suppress_tokens": null,
+        "bos_token_id": null,
+        "chunk_size_feed_forward": 0,
+        "cross_attention_hidden_size": null,
+        "decoder_start_token_id": null,
+        "diversity_penalty": 0.0,
+        "do_sample": false,
+        "early_stopping": false,
+        "encoder_no_repeat_ngram_size": 0,
+        "eos_token_id": null,
+        "exponential_decay_length_penalty": null,
+        "finetuning_task": null,
+        "forced_bos_token_id": null,
+        "forced_eos_token_id": null,
+        "hidden_act": "gelu_pytorch_tanh",
+        "hidden_size": 1024,
+        "id2label": {
+          "0": "LABEL_0",
+          "1": "LABEL_1"
+        },
+        "image_size": 384,
+        "intermediate_size": 4096,
+        "is_decoder": false,
+        "is_encoder_decoder": false,
+        "label2id": {
+          "LABEL_0": 0,
+          "LABEL_1": 1
+        },
+        "layer_norm_eps": 1e-06,
+        "length_penalty": 1.0,
+        "max_length": 20,
+        "min_length": 0,
+        "model_type": "siglip_vision_model",
+        "no_repeat_ngram_size": 0,
+        "num_attention_heads": 16,
+        "num_beam_groups": 1,
+        "num_beams": 1,
+        "num_channels": 3,
+        "num_hidden_layers": 24,
+        "num_return_sequences": 1,
+        "output_attentions": false,
+        "output_hidden_states": false,
+        "output_scores": false,
+        "pad_token_id": null,
+        "patch_size": 16,
+        "prefix": null,
+        "problem_type": null,
+        "pruned_heads": {},
+        "remove_invalid_values": false,
+        "repetition_penalty": 1.0,
+        "return_dict": true,
+        "return_dict_in_generate": false,
+        "sep_token_id": null,
+        "suppress_tokens": null,
+        "task_specific_params": null,
+        "temperature": 1.0,
+        "tf_legacy_loss": false,
+        "tie_encoder_decoder": false,
+        "tie_word_embeddings": true,
+        "tokenizer_class": null,
+        "top_k": 50,
+        "top_p": 1.0,
+        "torch_dtype": null,
+        "torchscript": false,
+        "typical_p": 1.0,
+        "use_bfloat16": false
+      }
+    },
+    "llm_config": {
+      "_name_or_path": "mesolitica/malaysian-tinyllama-1.1b-16k-instructions-v3",
+      "add_cross_attention": false,
+      "architectures": [
+        "LlamaForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "bad_words_ids": null,
+      "begin_suppress_tokens": null,
+      "bos_token_id": 1,
+      "chunk_size_feed_forward": 0,
+      "cross_attention_hidden_size": null,
+      "decoder_start_token_id": null,
+      "diversity_penalty": 0.0,
+      "do_sample": false,
+      "early_stopping": false,
+      "encoder_no_repeat_ngram_size": 0,
+      "eos_token_id": 2,
+      "exponential_decay_length_penalty": null,
+      "finetuning_task": null,
+      "forced_bos_token_id": null,
+      "forced_eos_token_id": null,
+      "hidden_act": "silu",
+      "hidden_size": 2048,
+      "id2label": {
+        "0": "LABEL_0",
+        "1": "LABEL_1"
+      },
+      "initializer_range": 0.02,
+      "intermediate_size": 5632,
+      "is_decoder": false,
+      "is_encoder_decoder": false,
+      "label2id": {
+        "LABEL_0": 0,
+        "LABEL_1": 1
+      },
+      "length_penalty": 1.0,
+      "max_length": 20,
+      "max_position_embeddings": 32768,
+      "min_length": 0,
+      "model_type": "llama",
+      "no_repeat_ngram_size": 0,
+      "num_attention_heads": 32,
+      "num_beam_groups": 1,
+      "num_beams": 1,
+      "num_hidden_layers": 22,
+      "num_key_value_heads": 4,
+      "num_return_sequences": 1,
+      "output_attentions": false,
+      "output_hidden_states": false,
+      "output_scores": false,
+      "pad_token_id": null,
+      "prefix": null,
+      "pretraining_tp": 1,
+      "problem_type": null,
+      "pruned_heads": {},
+      "remove_invalid_values": false,
+      "repetition_penalty": 1.0,
+      "return_dict": true,
+      "return_dict_in_generate": false,
+      "rms_norm_eps": 1e-05,
+      "rope_scaling": null,
+      "rope_theta": 10000.0,
+      "sep_token_id": null,
+      "suppress_tokens": null,
+      "task_specific_params": null,
+      "temperature": 1.0,
+      "tf_legacy_loss": false,
+      "tie_encoder_decoder": false,
+      "tie_word_embeddings": false,
+      "tokenizer_class": null,
+      "top_k": 50,
+      "top_p": 1.0,
+      "torch_dtype": "bfloat16",
+      "torchscript": false,
+      "typical_p": 1.0,
+      "use_bfloat16": false,
+      "use_cache": true,
+      "vocab_size": 32004
+    },
+    "model_type": "mm_llms",
+    "torch_dtype": "bfloat16",
+    "transformers_version": "4.37.2",
+    "vision_select_layer": -2
+  },
+  "sample_analysis": {
+    "Cardboard": [
+      {
+        "filename": "Cardboard_1.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      },
+      {
+        "filename": "Cardboard_10.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      }
+    ],
+    "Food Organics": [
+      {
+        "filename": "Food Organics_1.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      },
+      {
+        "filename": "Food Organics_10.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      }
+    ],
+    "Glass": [
+      {
+        "filename": "Glass_1.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      },
+      {
+        "filename": "Glass_10.jpg",
+        "size": [
+          524,
+          524
+        ],
+        "mode": "RGB",
+        "format": "JPEG"
+      }
+    ]
+  },
+  "training_data": [
+    {
+      "category": "Cardboard",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it cardboard?",
+        "Describe the waste material in this image.",
+        "This is a photo of cardboard waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is cardboard waste.",
+        "This waste belongs to the cardboard category.",
+        "This is a cardboard material that should be recycled/disposed of appropriately.",
+        "I can see cardboard waste in this image."
+      ]
+    },
+    {
+      "category": "Food Organics",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it food organics?",
+        "Describe the waste material in this image.",
+        "This is a photo of food organics waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is food organics waste.",
+        "This waste belongs to the food organics category.",
+        "This is a food organics material that should be recycled/disposed of appropriately.",
+        "I can see food organics waste in this image."
+      ]
+    },
+    {
+      "category": "Glass",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it glass?",
+        "Describe the waste material in this image.",
+        "This is a photo of glass waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is glass waste.",
+        "This waste belongs to the glass category.",
+        "This is a glass material that should be recycled/disposed of appropriately.",
+        "I can see glass waste in this image."
+      ]
+    },
+    {
+      "category": "Metal",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it metal?",
+        "Describe the waste material in this image.",
+        "This is a photo of metal waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is metal waste.",
+        "This waste belongs to the metal category.",
+        "This is a metal material that should be recycled/disposed of appropriately.",
+        "I can see metal waste in this image."
+      ]
+    },
+    {
+      "category": "Miscellaneous Trash",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it miscellaneous trash?",
+        "Describe the waste material in this image.",
+        "This is a photo of miscellaneous trash waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is miscellaneous trash waste.",
+        "This waste belongs to the miscellaneous trash category.",
+        "This is a miscellaneous trash material that should be recycled/disposed of appropriately.",
+        "I can see miscellaneous trash waste in this image."
+      ]
+    },
+    {
+      "category": "Paper",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it paper?",
+        "Describe the waste material in this image.",
+        "This is a photo of paper waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is paper waste.",
+        "This waste belongs to the paper category.",
+        "This is a paper material that should be recycled/disposed of appropriately.",
+        "I can see paper waste in this image."
+      ]
+    },
+    {
+      "category": "Plastic",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it plastic?",
+        "Describe the waste material in this image.",
+        "This is a photo of plastic waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is plastic waste.",
+        "This waste belongs to the plastic category.",
+        "This is a plastic material that should be recycled/disposed of appropriately.",
+        "I can see plastic waste in this image."
+      ]
+    },
+    {
+      "category": "Textile Trash",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it textile trash?",
+        "Describe the waste material in this image.",
+        "This is a photo of textile trash waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is textile trash waste.",
+        "This waste belongs to the textile trash category.",
+        "This is a textile trash material that should be recycled/disposed of appropriately.",
+        "I can see textile trash waste in this image."
+      ]
+    },
+    {
+      "category": "Vegetation",
+      "prompts": [
+        "What type of waste material is shown in this image?",
+        "Classify this waste item: Is it vegetation?",
+        "Describe the waste material in this image.",
+        "This is a photo of vegetation waste. How should it be disposed of?"
+      ],
+      "expected_responses": [
+        "This is vegetation waste.",
+        "This waste belongs to the vegetation category.",
+        "This is a vegetation material that should be recycled/disposed of appropriately.",
+        "I can see vegetation waste in this image."
+      ]
+    }
+  ],
+  "usage_guide": {
+    "model_info": {
+      "name": "Malaysian TinyLlama-1.1B-SigLIP-Large-384-Vision",
+      "type": "Multimodal Vision-Language Model",
+      "input_size": "384x384 pixels",
+      "languages": [
+        "English",
+        "Malay"
+      ],
+      "capabilities": [
+        "Image Description",
+        "Visual Q&A",
+        "Classification"
+      ]
+    },
+    "usage_steps": [
+      "1. Load the model using transformers library",
+      "2. Prepare images (resize to 384x384)",
+      "3. Create text prompts for classification",
+      "4. Process image and text together",
+      "5. Generate responses using model.generate()",
+      "6. Decode and clean the output"
+    ],
+    "training_tips": [
+      "Use learning rates between 1e-5 and 5e-5",
+      "Batch size: 4-8 depending on GPU memory",
+      "Fine-tune on waste-specific prompts",
+      "Use data augmentation for better generalization",
+      "Monitor validation accuracy during training"
+    ]
+  },
+  "status": "ready_for_training"
+}

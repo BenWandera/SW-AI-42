@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-10-28T12:54:50.098443",
+  "gnn_classification": {
+    "accuracy": 75.5,
+    "precision": 0.755,
+    "recall": 0.755,
+    "f1_score": 0.755,
+    "confidence": 58.16789934039116
+  },
+  "mobilevit_baseline": {
+    "accuracy": 88.42105263157895,
+    "precision": 0.885,
+    "recall": 0.886,
+    "f1_score": 0.885
+  },
+  "gnn_corrected_system": {
+    "accuracy": 93.26315789473684,
+    "precision": 0.8934277777777778,
+    "recall": 0.894538888888889,
+    "f1_score": 0.9019666666666666
+  },
+  "correction_statistics": {
+    "total_samples": 950,
+    "low_confidence_samples": 171,
+    "corrections_attempted": 46,
+    "successful_corrections": 46,
+    "correction_rate": 4.842105263157895,
+    "improvement": 4.84210526315789
+  },
+  "summary": {
+    "gnn_standalone_accuracy": 75.5,
+    "improvement_from_gnn": 4.84210526315789,
+    "final_system_accuracy": 93.26315789473684,
+    "gnn_role": "Secondary Classifier & Misclassification Corrector",
+    "status": "Operational"
+  }
+}

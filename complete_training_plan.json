@@ -1,0 +1,205 @@
+{
+  "timestamp": "2025-10-23T13:46:39.248218",
+  "project": "RealWaste Malaysian TinyLlama-SigLIP Fine-tuning",
+  "setup_instructions": "\n# Training Setup Instructions for Malaysian TinyLlama-SigLIP\n\n## Prerequisites\n1. Install compatible versions:\n   pip install torch>=2.0.0\n   pip install transformers>=4.35.0\n   pip install accelerate\n   pip install datasets\n   pip install Pillow\n\n## Model Information\n- Model: mesolitica/malaysian-tinyllama-1.1b-siglip-large-384-vision\n- Size: ~1.1B parameters (3.3GB)\n- Type: Multimodal Vision-Language Model\n- Input: 384x384 images + text prompts\n- Languages: English, Malay\n\n## Dataset Information\n- Total Images: 9,504\n- Categories: 9 waste types\n- Image Size: 524x524 (will resize to 384x384)\n- Format: JPEG, RGB mode\n- Distribution: Reasonably balanced (ratio 2.90)\n\n## Training Configuration\n- Learning Rate: 1e-5 to 5e-5\n- Batch Size: 4-8 (depending on GPU)\n- Epochs: 3-5\n- Optimizer: AdamW\n- Scheduler: Linear with warmup\n- Data Split: 80% train, 20% validation\n",
+  "training_data": {
+    "config": {
+      "model_name": "mesolitica/malaysian-tinyllama-1.1b-siglip-large-384-vision",
+      "dataset_path": "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste",
+      "cache_dir": "./hf_cache",
+      "output_dir": "./realwaste_finetuned_model",
+      "training_params": {
+        "learning_rate": 2e-05,
+        "per_device_train_batch_size": 4,
+        "per_device_eval_batch_size": 4,
+        "num_train_epochs": 5,
+        "warmup_steps": 100,
+        "logging_steps": 10,
+        "evaluation_strategy": "epoch",
+        "save_strategy": "epoch",
+        "save_total_limit": 2,
+        "load_best_model_at_end": true,
+        "metric_for_best_model": "eval_loss",
+        "greater_is_better": false,
+        "dataloader_num_workers": 2,
+        "remove_unused_columns": false,
+        "fp16": true,
+        "gradient_checkpointing": true,
+        "gradient_accumulation_steps": 2
+      },
+      "data_params": {
+        "image_size": 384,
+        "max_length": 512,
+        "train_split": 0.8,
+        "val_split": 0.2,
+        "max_samples_per_class": null
+      },
+      "waste_categories": [
+        "Cardboard",
+        "Food Organics",
+        "Glass",
+        "Metal",
+        "Miscellaneous Trash",
+        "Paper",
+        "Plastic",
+        "Textile Trash",
+        "Vegetation"
+      ]
+    },
+    "prompt_templates": [
+      "What type of waste is this?",
+      "Classify this waste material:",
+      "Identify the waste category:",
+      "What kind of waste am I looking at?",
+      "Is this {category} waste?",
+      "Does this belong to {category} category?",
+      "Can you confirm this is {category}?",
+      "Describe this waste material:",
+      "What do you see in this waste image?",
+      "Tell me about this waste item:",
+      "How should this waste be disposed of?",
+      "Is this waste recyclable?",
+      "What's the proper way to handle this waste?",
+      "Should this go in recycling or trash?",
+      "What material is this waste made of?",
+      "What's the composition of this waste?",
+      "Identify the material type:",
+      "Apakah jenis sisa ini?",
+      "Klasifikasikan bahan sisa ini:",
+      "Terangkan sisa yang ada dalam gambar:",
+      "Bagaimana cara yang betul untuk melupus sisa ini?"
+    ],
+    "expected_responses": {
+      "Cardboard": [
+        "This is cardboard waste.",
+        "I can see cardboard material in this image.",
+        "This waste item is made of cardboard and should be recycled.",
+        "This is recyclable cardboard waste.",
+        "Cardboard waste that can be recycled with paper products."
+      ],
+      "Food Organics": [
+        "This is organic food waste.",
+        "I can see food scraps that are organic waste.",
+        "This is compostable food organic waste.",
+        "Food waste that should be composted.",
+        "Organic food material suitable for composting."
+      ],
+      "Glass": [
+        "This is glass waste.",
+        "I can see glass material that should be recycled.",
+        "This glass waste can be recycled.",
+        "Glass container that belongs in recycling.",
+        "Recyclable glass material."
+      ],
+      "Metal": [
+        "This is metal waste.",
+        "I can see metal material that should be recycled.",
+        "This metal waste is recyclable.",
+        "Metal container suitable for recycling.",
+        "Recyclable metal material."
+      ],
+      "Miscellaneous Trash": [
+        "This is miscellaneous trash.",
+        "This waste doesn't fit standard recycling categories.",
+        "General trash that should go to landfill.",
+        "Non-recyclable miscellaneous waste.",
+        "Mixed waste material for general disposal."
+      ],
+      "Paper": [
+        "This is paper waste.",
+        "I can see paper material that should be recycled.",
+        "This paper waste is recyclable.",
+        "Paper material suitable for recycling.",
+        "Recyclable paper product."
+      ],
+      "Plastic": [
+        "This is plastic waste.",
+        "I can see plastic material that may be recyclable.",
+        "This plastic waste should be sorted for recycling.",
+        "Plastic container that may be recyclable.",
+        "Plastic material - check recycling code."
+      ],
+      "Textile Trash": [
+        "This is textile waste.",
+        "I can see fabric or clothing material.",
+        "This textile waste may be donated or recycled.",
+        "Fabric material that could be repurposed.",
+        "Textile waste - consider donation if in good condition."
+      ],
+      "Vegetation": [
+        "This is vegetation waste.",
+        "I can see plant or organic garden material.",
+        "This vegetation waste should be composted.",
+        "Plant material suitable for composting.",
+        "Organic vegetation that can be composted."
+      ]
+    },
+    "data_preparation_steps": [
+      "1. Load and preprocess images (resize to 384x384)",
+      "2. Create image-text pairs using prompt templates",
+      "3. Tokenize text inputs with proper padding",
+      "4. Split data into train/validation sets",
+      "5. Create DataLoader with appropriate batch size"
+    ],
+    "training_pipeline": [
+      "1. Load pre-trained Malaysian TinyLlama-SigLIP model",
+      "2. Set up training arguments and configuration",
+      "3. Initialize trainer with custom data collator",
+      "4. Start fine-tuning with monitoring",
+      "5. Evaluate on validation set after each epoch",
+      "6. Save best model checkpoints",
+      "7. Generate final evaluation report"
+    ],
+    "evaluation_metrics": [
+      "Classification Accuracy",
+      "Per-category Precision/Recall",
+      "Confusion Matrix",
+      "Training/Validation Loss",
+      "BLEU Score for text generation",
+      "Response Quality Assessment"
+    ]
+  },
+  "inference_examples": {
+    "sample_inputs": [
+      {
+        "image": "cardboard_sample.jpg",
+        "prompt": "What type of waste is this?",
+        "expected_output": "This is cardboard waste that should be recycled."
+      },
+      {
+        "image": "plastic_bottle.jpg",
+        "prompt": "How should this waste be disposed of?",
+        "expected_output": "This plastic bottle should be recycled. Check the recycling code at the bottom."
+      },
+      {
+        "image": "food_scraps.jpg",
+        "prompt": "Apakah jenis sisa ini?",
+        "expected_output": "Ini adalah sisa makanan organik yang boleh dijadikan kompos."
+      }
+    ],
+    "testing_scenarios": [
+      "Single waste item classification",
+      "Mixed waste identification",
+      "Recycling guidance",
+      "Bilingual responses (English/Malay)",
+      "Disposal method recommendations",
+      "Material composition identification"
+    ]
+  },
+  "next_steps": [
+    "1. Set up proper Python environment with compatible packages",
+    "2. Test model loading with trust_remote_code=True",
+    "3. Implement custom dataset class for waste images",
+    "4. Create data collator for multimodal inputs",
+    "5. Configure training loop with monitoring",
+    "6. Start fine-tuning process",
+    "7. Evaluate and deploy fine-tuned model"
+  ],
+  "expected_outcomes": [
+    "Model can classify 9 types of waste with high accuracy",
+    "Supports bilingual responses (English/Malay)",
+    "Provides recycling and disposal guidance",
+    "Handles both single items and mixed waste",
+    "Ready for deployment in waste management applications"
+  ]
+}

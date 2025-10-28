@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-10-28T12:37:06.409041",
+  "system_name": "Complete Waste Management System",
+  "version": "1.0",
+  "components": {
+    "classification": {
+      "mobilevit_accuracy": 88.42105263157895,
+      "mobilevit_validation_accuracy": 88.85383806519454,
+      "mobilevit_f1_score": 0.885,
+      "mobilevit_precision": 0.885,
+      "mobilevit_recall": 0.886
+    },
+    "reasoning": {
+      "gnn_confidence": 58.16789934039116,
+      "gnn_samples_analyzed": 200,
+      "knowledge_graph_nodes": 28,
+      "knowledge_graph_edges": 50,
+      "gnn_accuracy": 75.5
+    },
+    "data_augmentation": {
+      "gan_trained": true,
+      "gan_epochs": 30,
+      "synthetic_images_generated": 1000,
+      "gan_quality_score": 0.82
+    },
+    "incentive_system": {
+      "points_calculator_accuracy": 100.0,
+      "recycling_recommendations": 9,
+      "environmental_impact_tracking": true
+    },
+    "overall": {
+      "total_images_processed": 9504,
+      "training_time_hours": 13.1,
+      "system_components": 4,
+      "integrated_accuracy": 85.38552631578948
+    }
+  },
+  "summary": {
+    "integrated_accuracy": 85.38552631578948,
+    "primary_classifier_accuracy": 88.42105263157895,
+    "reasoning_confidence": 58.16789934039116,
+    "data_quality_score": 82.0,
+    "total_images_processed": 9504,
+    "training_time_hours": 13.1,
+    "system_status": "Operational"
+  },
+  "performance_benchmarks": {
+    "accuracy_target": 85.0,
+    "accuracy_achieved": 85.38552631578948,
+    "target_met": true,
+    "response_time_target_ms": 100,
+    "response_time_achieved_ms": 82,
+    "resource_efficiency": "Good"
+  }
+}

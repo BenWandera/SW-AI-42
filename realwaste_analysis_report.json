@@ -1,0 +1,199 @@
+{
+  "dataset_info": {
+    "Cardboard": {
+      "count": 922,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Cardboard\\Cardboard_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Cardboard\\Cardboard_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Cardboard\\Cardboard_100.jpg"
+      ]
+    },
+    "Food Organics": {
+      "count": 822,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Food Organics\\Food Organics_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Food Organics\\Food Organics_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Food Organics\\Food Organics_100.jpg"
+      ]
+    },
+    "Glass": {
+      "count": 840,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Glass\\Glass_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Glass\\Glass_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Glass\\Glass_100.jpg"
+      ]
+    },
+    "Metal": {
+      "count": 1580,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Metal\\Metal_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Metal\\Metal_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Metal\\Metal_100.jpg"
+      ]
+    },
+    "Miscellaneous Trash": {
+      "count": 990,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Miscellaneous Trash\\Miscellaneous Trash_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Miscellaneous Trash\\Miscellaneous Trash_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Miscellaneous Trash\\Miscellaneous Trash_100.jpg"
+      ]
+    },
+    "Paper": {
+      "count": 1000,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Paper\\Paper_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Paper\\Paper_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Paper\\Paper_100.jpg"
+      ]
+    },
+    "Plastic": {
+      "count": 1842,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Plastic\\Plastic_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Plastic\\Plastic_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Plastic\\Plastic_100.jpg"
+      ]
+    },
+    "Textile Trash": {
+      "count": 636,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Textile Trash\\Textile Trash_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Textile Trash\\Textile Trash_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Textile Trash\\Textile Trash_100.jpg"
+      ]
+    },
+    "Vegetation": {
+      "count": 872,
+      "sample_files": [
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Vegetation\\Vegetation_1.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Vegetation\\Vegetation_10.jpg",
+        "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste\\Vegetation\\Vegetation_100.jpg"
+      ]
+    }
+  },
+  "model_path": "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\hf_cache\\models--mesolitica--malaysian-tinyllama-1.1b-siglip-large-384-vision\\snapshots\\f8ff713055074e866fc02e993d3075acf57d1dc3",
+  "categories": [
+    "Cardboard",
+    "Food Organics",
+    "Glass",
+    "Metal",
+    "Miscellaneous Trash",
+    "Paper",
+    "Plastic",
+    "Textile Trash",
+    "Vegetation"
+  ],
+  "test_prompts": {
+    "Cardboard": [
+      "What type of waste is this?",
+      "Is this cardboard waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this cardboard waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this cardboard waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this cardboard waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this cardboard waste? Is this recyclable or not?"
+    ],
+    "Food Organics": [
+      "What type of waste is this?",
+      "Is this food organics waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this food organics waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this food organics waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this food organics waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this food organics waste? Is this recyclable or not?"
+    ],
+    "Glass": [
+      "What type of waste is this?",
+      "Is this glass waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this glass waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this glass waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this glass waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this glass waste? Is this recyclable or not?"
+    ],
+    "Metal": [
+      "What type of waste is this?",
+      "Is this metal waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this metal waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this metal waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this metal waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this metal waste? Is this recyclable or not?"
+    ],
+    "Miscellaneous Trash": [
+      "What type of waste is this?",
+      "Is this miscellaneous trash waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this miscellaneous trash waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this miscellaneous trash waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this miscellaneous trash waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this miscellaneous trash waste? Is this recyclable or not?"
+    ],
+    "Paper": [
+      "What type of waste is this?",
+      "Is this paper waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this paper waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this paper waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this paper waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this paper waste? Is this recyclable or not?"
+    ],
+    "Plastic": [
+      "What type of waste is this?",
+      "Is this plastic waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this plastic waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this plastic waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this plastic waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this plastic waste? Is this recyclable or not?"
+    ],
+    "Textile Trash": [
+      "What type of waste is this?",
+      "Is this textile trash waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this textile trash waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this textile trash waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this textile trash waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this textile trash waste? Is this recyclable or not?"
+    ],
+    "Vegetation": [
+      "What type of waste is this?",
+      "Is this vegetation waste? What type of waste is this?",
+      "Describe this waste material:",
+      "Is this vegetation waste? Describe this waste material:",
+      "How should this be recycled?",
+      "Is this vegetation waste? How should this be recycled?",
+      "What material is this made of?",
+      "Is this vegetation waste? What material is this made of?",
+      "Is this recyclable or not?",
+      "Is this vegetation waste? Is this recyclable or not?"
+    ]
+  },
+  "total_images": 9504
+}

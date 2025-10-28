@@ -1,0 +1,53 @@
+{
+  "timestamp": "2025-10-28T02:21:22.029540",
+  "dataset": {
+    "path": "C:\\Users\\Z-BOOK\\OneDrive\\Documents\\DATASETS\\realwaste\\RealWaste",
+    "total_images": 4752,
+    "analyzed_samples": 200
+  },
+  "model": {
+    "feature_extractor": "resnet50",
+    "embedding_dim": 2048,
+    "device": "cpu"
+  },
+  "statistics": {
+    "mean_confidence": 0.5816789934039116,
+    "std_confidence": 0.02449181718952834,
+    "min_confidence": 0.5200265049934387,
+    "max_confidence": 0.64992356300354,
+    "median_confidence": 0.5765464603900909
+  },
+  "risk_distribution": {
+    "safe": 0,
+    "low_risk": 200,
+    "medium_risk": 0,
+    "high_risk": 0,
+    "critical": 0
+  },
+  "category_distribution": {
+    "ORGANIC": {
+      "count": 29,
+      "avg_confidence": 0.5858737374174183
+    },
+    "PAPER": {
+      "count": 37,
+      "avg_confidence": 0.5880289657695873
+    },
+    "METAL": {
+      "count": 39,
+      "avg_confidence": 0.5745362150363433
+    },
+    "GLASS": {
+      "count": 20,
+      "avg_confidence": 0.5775021761655807
+    },
+    "PLASTIC": {
+      "count": 33,
+      "avg_confidence": 0.5846799666231329
+    },
+    "MIXED": {
+      "count": 42,
+      "avg_confidence": 0.5794522322359539
+    }
+  }
+}
