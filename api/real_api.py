@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 import logging
 import json
 import os
+import io
 from dotenv import load_dotenv
 
 # Load environment variables
