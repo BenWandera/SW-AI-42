@@ -368,11 +368,13 @@ async def debug_users():
 
 
 @app.post("/api/classify")
-async def classify_waste(image: UploadFile = File(...)):
+async def classify_waste(image: UploadFile = File(...), user_id: str = "default_user"):
     """
     Classify waste image using MobileViT + GNN
     """
     try:
+        logger.info(f"📸 Classification request from user: {user_id}")
+        
         # Validate image
         if image.content_type and not (image.content_type.startswith('image/') or 
                                        image.content_type == 'application/octet-stream'):
@@ -414,8 +416,7 @@ async def classify_waste(image: UploadFile = File(...)):
         
         logger.info(f"✅ Final: {final_class_name} ({final_confidence:.2%})")
         
-        # Award points to user (default_user for now)
-        user_id = "default_user"
+        # Award points to the actual user
         if user_id not in user_stats:
             user_stats[user_id] = {
                 "user_id": user_id,
