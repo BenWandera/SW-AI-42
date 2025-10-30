@@ -349,6 +349,23 @@ async def root():
     }
 
 
+@app.get("/api/debug/users")
+async def debug_users():
+    """Debug endpoint to see all users"""
+    return {
+        "total_users": len(user_stats),
+        "users": [
+            {
+                "user_id": uid,
+                "name": udata.get("name", "Unknown"),
+                "points": udata.get("total_points", 0),
+                "items": udata.get("items_classified", 0)
+            }
+            for uid, udata in user_stats.items()
+        ]
+    }
+
+
 @app.post("/api/classify")
 async def classify_waste(image: UploadFile = File(...)):
     """
