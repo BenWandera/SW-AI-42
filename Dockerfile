@@ -17,7 +17,13 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements from api folder
 COPY api/requirements.txt .
 
-# Install Python dependencies
+# Install PyTorch first (required for torch-scatter to build)
+RUN pip install --no-cache-dir torch>=2.0.1 torchvision>=0.15.2
+
+# Install torch-geometric extensions (need torch installed first)
+RUN pip install --no-cache-dir torch-scatter torch-sparse torch-cluster torch-spline-conv
+
+# Install remaining Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code from api folder
