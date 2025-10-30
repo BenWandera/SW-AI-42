@@ -16,80 +16,27 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# Virtual Environment
+# Virtual Environment (still excluded)
 .venv/
 venv/
 ENV/
 env/
-.virtualenv/
 
-# PyTorch Models (Large files - use Git LFS or don't commit)
-*.pth
-*.pt
-*.ckpt
-*.bin
-*.h5
-
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
-
-# IDEs
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# OS files
 .DS_Store
-
-# Logs
-*.log
-logs/
-*.txt
-
-# Data files (too large for git)
-*.csv
-*.zip
-*.tar.gz
-*.rar
-realwaste/
-RealWaste/
-dataset/
-data/
-
-# Generated outputs
-*.png
-*.jpg
-*.jpeg
-!demo_*.png
-!sample_*.png
-
-# Hugging Face cache
-hf_cache/
-.cache/
-transformers_cache/
-
-# Results and metrics (keep JSON, ignore images)
-mobilevit_metrics/*.png
-system_metrics/*.png
-gnn_correction_metrics/*.png
-waste_gan_output/samples/
-waste_gan_output/models/
-synthetic_outputs/
-gnn_visualizations/
-realwaste_eda_results/
-
-# Database files
-*.db
-*.sqlite
-*.sqlite3
+Thumbs.db
+desktop.ini
 
 # Temporary files
 *.tmp
@@ -98,9 +45,28 @@ realwaste_eda_results/
 .coverage
 htmlcov/
 
-# OS files
-Thumbs.db
-desktop.ini
+# Git LFS objects
+.git/lfs/
 
-# Project specific
+# Only exclude organize_files.py
 organize_files.py
+
+# Large datasets - Don't upload to GitHub
+realwaste/
+synthetic_outputs/
+waste_gan_output/
+hf_cache/
+*.pth
+*.bin
+*.safetensors
+
+# APK files - Too large for GitHub
+*.apk
+EcoWaste-AI-Latest/
+
+# User data
+api/user_stats.json
+api/uploads/
+
+# Model files
+best_mobilevit_waste_model.pth

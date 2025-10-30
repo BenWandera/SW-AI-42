@@ -1,0 +1,70 @@
+# Don't include these in Docker image
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Model files (will be downloaded on startup)
+*.pth
+*.bin
+*.safetensors
+
+# Large datasets
+realwaste/
+synthetic_outputs/
+waste_gan_output/
+
+# Logs and temporary files
+*.log
+*.tmp
+temp/
+
+# User data (use persistent storage)
+user_stats.json
+uploads/*
+
+# Development files
+test_*.py
+*_test.py
+check_*.py
+compare_*.py
+display_*.py
+
+# Documentation
+*.md
+README*
+GUIDE*
+
+# APK files
+*.apk
+
+# Flutter app
+waste_flutter_app/
+
+# Jupyter notebooks
+*.ipynb
+
+# Environment files
+.env.local
+.env.development
