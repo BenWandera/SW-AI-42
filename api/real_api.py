@@ -11,7 +11,6 @@ import torch
 import torch.nn.functional as F
 from transformers import MobileViTImageProcessor
 from PIL import Image
-import io
 import numpy as np
 from datetime import datetime, timedelta
 import logging
@@ -560,31 +559,26 @@ async def calculate_incentive(request: IncentiveRequest):
 @app.get("/api/users/{user_id}")
 async def get_user(user_id: str):
     """Get user profile with real stats"""
-    # Use default_user if not found
-    if user_id not in user_stats:
-        user_id = "default_user"
     
-    user = user_stats.get(user_id)
-    if not user:
-        # Return default user stats if not initialized
-        return {
+    # If user doesn't exist, create a new user profile
+    if user_id not in user_stats:
+        logger.info(f"Creating new user profile for: {user_id}")
+        user_stats[user_id] = {
             "user_id": user_id,
-            "name": "Ben Wandera",
-            "email": "ben.wandera@ecowaste.com",
-            "neighborhood": "Kampala Central",
-            "division": "Central Division",
+            "name": f"User {user_id[:8]}",  # Temporary name, will be updated by app
             "total_points": 0,
             "current_streak": 0,
-            "tier": "Bronze",
-            "level": 1,
             "items_classified": 0,
-            "correct_classifications": 0,
+            "last_classification_date": None,
+            "classification_history": [],
             "category_stats": {},
             "achievements": [],
-            "last_classification_date": None,
-            "joined_date": "2024-07-01T00:00:00Z",
-            "recent_classifications": []
+            "challenges": {},
+            "joined_date": datetime.now().isoformat()
         }
+        save_user_stats()
+    
+    user = user_stats[user_id]
     
     # Calculate tier
     tier = calculate_tier(user["total_points"])
@@ -623,20 +617,44 @@ async def get_user(user_id: str):
 
 
 @app.post("/api/users/{user_id}/update")
-async def update_user_profile(user_id: str, name: str = None):
+async def update_user_profile(
+    user_id: str, 
+    name: str = None,
+    email: str = None,
+    neighborhood: str = None,
+    division: str = None
+):
     """Update user profile information"""
-    # Use default_user if not found
-    if user_id not in user_stats:
-        user_id = "default_user"
     
+    # Create user if doesn't exist
     if user_id not in user_stats:
-        raise HTTPException(status_code=404, detail="User not found")
+        logger.info(f"Creating new user during update: {user_id}")
+        user_stats[user_id] = {
+            "user_id": user_id,
+            "name": name or f"User {user_id[:8]}",
+            "total_points": 0,
+            "current_streak": 0,
+            "items_classified": 0,
+            "last_classification_date": None,
+            "classification_history": [],
+            "category_stats": {},
+            "achievements": [],
+            "challenges": {},
+            "joined_date": datetime.now().isoformat()
+        }
     
-    # Update user name if provided
+    # Update user fields if provided
     if name:
         user_stats[user_id]["name"] = name
-        save_user_stats()
-        logger.info(f"✏️ Updated user profile: {user_id} -> {name}")
+    if email:
+        user_stats[user_id]["email"] = email
+    if neighborhood:
+        user_stats[user_id]["neighborhood"] = neighborhood
+    if division:
+        user_stats[user_id]["division"] = division
+    
+    save_user_stats()
+    logger.info(f"✏️ Updated user profile: {user_id} -> {user_stats[user_id]['name']}")
     
     return {
         "success": True,

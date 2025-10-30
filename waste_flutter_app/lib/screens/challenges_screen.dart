@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../services/user_service.dart';
 
 class ChallengesScreen extends StatefulWidget {
   const ChallengesScreen({super.key});
@@ -10,24 +11,33 @@ class ChallengesScreen extends StatefulWidget {
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
   final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
   List<Map<String, dynamic>> _challenges = [];
   bool _isLoading = true;
   String? _error;
+  String? _userId;
 
   @override
   void initState() {
     super.initState();
-    _loadChallenges();
+    _initializeAndLoad();
+  }
+
+  Future<void> _initializeAndLoad() async {
+    _userId = await _userService.getUserId();
+    await _loadChallenges();
   }
 
   Future<void> _loadChallenges() async {
+    if (_userId == null) return;
+    
     try {
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
-      final data = await _apiService.getChallenges('default_user');
+      final data = await _apiService.getChallenges(_userId!);
       
       setState(() {
         _challenges = List<Map<String, dynamic>>.from(data['challenges']);
@@ -42,8 +52,10 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
   }
 
   Future<void> _claimReward(String challengeId) async {
+    if (_userId == null) return;
+    
     try {
-      final result = await _apiService.claimChallengeReward(challengeId, 'default_user');
+      final result = await _apiService.claimChallengeReward(challengeId, _userId!);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

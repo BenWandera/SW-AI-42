@@ -9,8 +9,8 @@ import '../models/user_model.dart';
 /// Main API service for communicating with the backend
 class ApiService {
   // 🌐 PRODUCTION CONFIGURATION
-  // After deploying to Crane Cloud, update this URL
-  static const String PRODUCTION_URL = 'https://your-app.cranecloud.io'; // 👈 Update after deployment!
+  // Deployed on Render.com
+  static const String PRODUCTION_URL = 'https://sw-ai-42.onrender.com'; // ✅ Live on Render!
   
   // 💻 LOCAL DEVELOPMENT CONFIGURATION
   static const String LOCAL_IP = '192.168.100.152'; // Your computer's IP for testing
@@ -18,7 +18,7 @@ class ApiService {
   // 🔄 Switch between production and local
   // Set to true when releasing APK to users
   // Set to false when testing locally
-  static const bool USE_PRODUCTION = false; // 👈 Change to true for production release!
+  static const bool USE_PRODUCTION = true; // ✅ Using production server!
   
   static String get baseUrl {
     // Use production URL if enabled
@@ -133,14 +133,20 @@ class ApiService {
   Future<UserModel> updateUserProfile({
     required String userId,
     String? name,
+    String? email,
+    String? neighborhood,
+    String? division,
   }) async {
     try {
       _logger.i('Updating profile for user: $userId');
 
       final queryParams = <String, String>{};
       if (name != null) queryParams['name'] = name;
+      if (email != null) queryParams['email'] = email;
+      if (neighborhood != null) queryParams['neighborhood'] = neighborhood;
+      if (division != null) queryParams['division'] = division;
 
-      final uri = Uri.parse('$baseUrl/api/users/$userId/update').replace(queryParameters: queryParams);
+      final uri = Uri.parse('$baseUrl/users/$userId/update').replace(queryParameters: queryParams);
 
       final response = await _client.post(
         uri,
