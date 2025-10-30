@@ -3,7 +3,7 @@ Real FastAPI Backend with MobileViT Model Integration
 Loads trained MobileViT model for actual waste classification
 """
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -368,7 +368,7 @@ async def debug_users():
 
 
 @app.post("/api/classify")
-async def classify_waste(image: UploadFile = File(...), user_id: str = "default_user"):
+async def classify_waste(image: UploadFile = File(...), user_id: str = Form("default_user")):
     """
     Classify waste image using MobileViT + GNN
     """
