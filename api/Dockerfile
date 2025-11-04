@@ -26,6 +26,12 @@ COPY model_loader.py .
 COPY gnn_loader.py .
 COPY models.py .
 
+# Copy trained model files (CRITICAL for real predictions!)
+COPY ../best_mobilevit_waste_model.pth ./best_mobilevit_waste_model.pth
+
+# Copy GNN model directory (optional but recommended)
+# COPY ../GNN\ model/ ./GNN_model/
+
 # Create directories for model cache and uploads
 RUN mkdir -p /app/uploads /app/hf_cache /app/data
 

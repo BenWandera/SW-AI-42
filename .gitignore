@@ -56,7 +56,7 @@ realwaste/
 synthetic_outputs/
 waste_gan_output/
 hf_cache/
-*.pth
+# *.pth - Now handled by Git LFS
 *.bin
 *.safetensors
 
@@ -68,5 +68,5 @@ EcoWaste-AI-Latest/
 api/user_stats.json
 api/uploads/
 
-# Model files
-best_mobilevit_waste_model.pth
+# Model files are now tracked via Git LFS
+# best_mobilevit_waste_model.pth - Removed, using Git LFS

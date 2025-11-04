@@ -155,12 +155,31 @@ def update_user_streak(user_id: str):
         user["current_streak"] = 1
         user["last_classification_date"] = today.isoformat()
 
-def load_mobilevit_model(model_path: str = "../best_mobilevit_waste_model.pth"):
+def load_mobilevit_model(model_path: str = None):
     """Load trained MobileViT model"""
     global mobilevit_model, mobilevit_processor, device, CLASS_NAMES, gnn_verifier
     
+    # Auto-detect model path (works both locally and on Render)
+    if model_path is None:
+        # Try multiple possible locations
+        possible_paths = [
+            "best_mobilevit_waste_model.pth",  # Docker/Render location
+            "../best_mobilevit_waste_model.pth",  # Local dev location
+            "/app/best_mobilevit_waste_model.pth"  # Absolute Docker path
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                model_path = path
+                logger.info(f"✅ Found model at: {model_path}")
+                break
+        
+        if model_path is None:
+            logger.error("❌ Model file not found in any expected location!")
+            logger.error(f"   Searched: {possible_paths}")
+            return False
+    
     try:
-        logger.info("🔄 Loading MobileViT model...")
+        logger.info(f"🔄 Loading MobileViT model from: {model_path}")
         
         # Set device
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -324,7 +343,7 @@ async def startup_event():
     print("📱 Flutter app connection: http://192.168.100.152:8000")
     print("🔍 Loading MobileViT model...")
     
-    model_loaded = load_mobilevit_model("../best_mobilevit_waste_model.pth")
+    model_loaded = load_mobilevit_model()  # Auto-detect model path
     
     if model_loaded:
         print("✅ MobileViT model ready!")
