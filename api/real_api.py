@@ -28,6 +28,13 @@ from model_loader import load_trained_model
 # Import GNN verifier
 from gnn_loader import load_gnn_verifier
 
+# Import active learning system
+from active_learning_system import (
+    get_feedback_storage, 
+    get_active_learning_manager
+)
+from model_retrainer import ModelRetrainer
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -79,6 +86,11 @@ mobilevit_model = None
 mobilevit_processor = None
 gnn_verifier = None
 device = None
+
+# Active learning components
+feedback_storage = None
+active_learning_manager = None
+model_retrainer = None
 
 # User stats storage with persistence
 def load_user_stats():
@@ -348,6 +360,8 @@ def apply_gnn_verification(mobilevit_result: dict):
 @app.on_event("startup")
 async def startup_event():
     """Load model on startup"""
+    global feedback_storage, active_learning_manager, model_retrainer
+    
     print("\n" + "="*60)
     print("🚀 Starting Waste Management API (Real MobileViT)")
     print("="*60)
@@ -361,6 +375,23 @@ async def startup_event():
         print("🧠 GNN verification: " + ("Active (Rule-based)" if gnn_verifier else "Mock mode"))
     else:
         print("⚠️  Running in MOCK mode")
+    
+    # Initialize active learning
+    print("🎓 Initializing active learning system...")
+    try:
+        feedback_storage = get_feedback_storage()
+        active_learning_manager = get_active_learning_manager()
+        model_retrainer = ModelRetrainer()
+        
+        stats = feedback_storage.get_statistics()
+        print(f"✅ Active learning ready! {stats['total_feedback']} feedback samples collected")
+        
+        # Check if retraining is needed
+        should_retrain, reason = active_learning_manager.should_retrain()
+        if should_retrain:
+            print(f"⚠️ Model retraining recommended: {reason}")
+    except Exception as e:
+        print(f"⚠️ Active learning initialization failed: {e}")
     
     print("📡 API ready!")
     print("="*60 + "\n")
@@ -384,6 +415,8 @@ async def root():
 async def debug_files():
     """Debug endpoint to check what files exist in the container"""
     import os
+    import urllib.request
+    
     files_in_app = os.listdir("/app") if os.path.exists("/app") else []
     files_in_current = os.listdir(".")
     
@@ -393,12 +426,23 @@ async def debug_files():
         "../best_mobilevit_waste_model.pth": os.path.exists("../best_mobilevit_waste_model.pth"),
     }
     
+    # Test if we can download
+    download_test = "Not attempted"
+    try:
+        test_url = "https://media.githubusercontent.com/media/BenWandera/SW-AI-42/main/api/best_mobilevit_waste_model.pth"
+        req = urllib.request.Request(test_url, method='HEAD')
+        response = urllib.request.urlopen(req, timeout=5)
+        download_test = f"URL accessible: {response.status} (Content-Length: {response.headers.get('Content-Length', 'unknown')})"
+    except Exception as e:
+        download_test = f"Download test failed: {str(e)}"
+    
     return {
         "current_directory": os.getcwd(),
         "files_in_app_dir": files_in_app,
         "files_in_current_dir": files_in_current,
         "model_file_checks": model_checks,
-        "model_loaded": mobilevit_model is not None
+        "model_loaded": mobilevit_model is not None,
+        "download_test": download_test
     }
 
 
@@ -1148,6 +1192,250 @@ async def claim_challenge_reward(challenge_id: str, user_id: str = "default_user
         "reward": challenge["reward"],
         "new_total_points": user_stats[user_id]["total_points"]
     }
+
+
+# ==================== ACTIVE LEARNING ENDPOINTS ====================
+
+@app.post("/api/feedback/submit")
+async def submit_feedback(
+    user_id: str = Form(...),
+    image: UploadFile = File(...),
+    predicted_class: str = Form(...),
+    predicted_confidence: float = Form(...),
+    correct_class: str = Form(...),
+    is_correct: bool = Form(...)
+):
+    """
+    Submit user feedback on a classification
+    This enables active learning and model improvement
+    """
+    try:
+        global feedback_storage
+        
+        if feedback_storage is None:
+            feedback_storage = get_feedback_storage()
+        
+        # Read image data
+        image_data = await image.read()
+        
+        # Store feedback
+        feedback_id = feedback_storage.add_feedback(
+            user_id=user_id,
+            image_data=image_data,
+            predicted_class=predicted_class,
+            predicted_confidence=predicted_confidence,
+            correct_class=correct_class,
+            is_correct=is_correct
+        )
+        
+        # Get updated statistics
+        stats = feedback_storage.get_statistics()
+        
+        # Check if retraining is recommended
+        should_retrain = False
+        retrain_reason = ""
+        if active_learning_manager:
+            should_retrain, retrain_reason = active_learning_manager.should_retrain()
+        
+        logger.info(f"📝 Feedback received: {feedback_id} - {'✓' if is_correct else '✗'} {correct_class}")
+        
+        return {
+            "success": True,
+            "feedback_id": feedback_id,
+            "message": "Thank you for your feedback! This helps improve our AI.",
+            "statistics": {
+                "total_feedback": stats["total_feedback"],
+                "accuracy": stats["overall_accuracy"],
+                "samples_ready": stats["samples_ready_for_training"]
+            },
+            "retraining": {
+                "recommended": should_retrain,
+                "reason": retrain_reason
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error submitting feedback: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/feedback/statistics")
+async def get_feedback_statistics():
+    """Get active learning statistics"""
+    try:
+        global feedback_storage
+        
+        if feedback_storage is None:
+            feedback_storage = get_feedback_storage()
+        
+        stats = feedback_storage.get_statistics()
+        
+        return {
+            "success": True,
+            "statistics": stats,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting statistics: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/learning/dashboard")
+async def get_learning_dashboard():
+    """Get comprehensive active learning dashboard data"""
+    try:
+        global active_learning_manager
+        
+        if active_learning_manager is None:
+            active_learning_manager = get_active_learning_manager()
+        
+        dashboard_data = active_learning_manager.get_dashboard_data()
+        
+        return {
+            "success": True,
+            "dashboard": dashboard_data,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting dashboard: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/model/retrain")
+async def trigger_retraining(
+    force: bool = False,
+    epochs: int = 3,
+    batch_size: int = 8
+):
+    """
+    Trigger model retraining with collected feedback
+    This is a long-running operation - use with caution in production
+    """
+    try:
+        global active_learning_manager, model_retrainer, mobilevit_model
+        
+        if active_learning_manager is None:
+            active_learning_manager = get_active_learning_manager()
+        
+        if model_retrainer is None:
+            model_retrainer = ModelRetrainer()
+        
+        # Check if retraining is needed
+        should_retrain, reason = active_learning_manager.should_retrain()
+        
+        if not should_retrain and not force:
+            return {
+                "success": False,
+                "message": f"Retraining not recommended: {reason}",
+                "force_required": True
+            }
+        
+        logger.info(f"🔄 Starting model retraining... (Reason: {reason})")
+        
+        # Prepare training data
+        training_data = active_learning_manager.prepare_training_data()
+        
+        if not training_data:
+            return {
+                "success": False,
+                "message": "Not enough training samples available",
+                "samples_available": 0
+            }
+        
+        # Perform retraining
+        results = model_retrainer.retrain(
+            feedback_samples=training_data["samples"],
+            class_names=CLASS_NAMES,
+            epochs=epochs,
+            batch_size=batch_size
+        )
+        
+        if results["success"]:
+            # Record training
+            active_learning_manager.record_training(training_data, {
+                "final_val_acc": results["final_val_acc"],
+                "best_val_acc": results["best_val_acc"]
+            })
+            
+            # Reload model in API
+            logger.info("🔄 Reloading updated model...")
+            load_mobilevit_model()
+            
+            logger.info(f"✅ Retraining complete! Accuracy: {results['best_val_acc']:.2f}%")
+            
+            return {
+                "success": True,
+                "message": "Model retrained successfully!",
+                "results": results,
+                "timestamp": datetime.now().isoformat()
+            }
+        else:
+            return {
+                "success": False,
+                "message": f"Retraining failed: {results.get('error')}",
+                "results": results
+            }
+        
+    except Exception as e:
+        logger.error(f"❌ Error during retraining: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/model/backups")
+async def list_model_backups():
+    """List all model backups"""
+    try:
+        global model_retrainer
+        
+        if model_retrainer is None:
+            model_retrainer = ModelRetrainer()
+        
+        backups = model_retrainer.list_backups()
+        
+        return {
+            "success": True,
+            "backups": backups,
+            "total_backups": len(backups)
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error listing backups: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/model/restore")
+async def restore_model_backup(backup_filename: str):
+    """Restore model from a specific backup"""
+    try:
+        global model_retrainer, mobilevit_model
+        
+        if model_retrainer is None:
+            model_retrainer = ModelRetrainer()
+        
+        backup_path = model_retrainer.backup_dir / backup_filename
+        
+        success = model_retrainer.restore_from_backup(str(backup_path))
+        
+        if success:
+            # Reload model
+            load_mobilevit_model()
+            
+            return {
+                "success": True,
+                "message": f"Model restored from {backup_filename}",
+                "backup_path": str(backup_path)
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Failed to restore model"
+            }
+        
+    except Exception as e:
+        logger.error(f"❌ Error restoring backup: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
