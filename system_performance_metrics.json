@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-11-04T15:20:44.412408",
+  "accuracy": {
+    "overall_accuracy": 0.945,
+    "source": "system_accuracy_metrics.json"
+  },
+  "f1_score": {
+    "overall_f1": 0.9389,
+    "source": "system_accuracy_metrics.json"
+  },
+  "latency": {
+    "num_requests": 50,
+    "avg_latency_ms": 2045.4971981048584,
+    "median_latency_ms": 2044.926404953003,
+    "min_latency_ms": 2021.1701393127441,
+    "max_latency_ms": 2077.5673389434814,
+    "std_dev_ms": 12.786811431464088,
+    "p95_latency_ms": 2069.8248386383057,
+    "p99_latency_ms": 2074.5108437538147
+  },
+  "throughput": {
+    "duration_seconds": 30.795443296432495,
+    "successful_requests": 0,
+    "failed_requests": 15,
+    "requests_per_second": 0.0,
+    "requests_per_minute": 0.0
+  },
+  "uptime": {
+    "duration_seconds": 30,
+    "successful_pings": 6,
+    "total_pings": 6,
+    "uptime_percentage": 100.0
+  },
+  "error_rate": {
+    "total_requests": 100,
+    "successful_requests": 0,
+    "total_errors": 100,
+    "error_rate_percentage": 100.0,
+    "success_rate_percentage": 0.0,
+    "error_breakdown": {
+      "4xx_errors": 100,
+      "5xx_errors": 0,
+      "timeout_errors": 0,
+      "connection_errors": 0,
+      "other_errors": 0
+    }
+  }
+}

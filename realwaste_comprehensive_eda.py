@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Comprehensive EDA for RealWaste Dataset
 This script provides a thorough exploratory data analysis of the RealWaste image classification dataset.
@@ -8,7 +7,7 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image, ImageStat
@@ -19,10 +18,8 @@ import json
 from datetime import datetime
 import cv2
 
-# Suppress warnings for cleaner output
 warnings.filterwarnings('ignore')
 
-# Set style for better plots
 plt.style.use('default')
 sns.set_palette("husl")
 
@@ -39,7 +36,6 @@ class RealWasteEDA:
         self.results_dir = Path("realwaste_eda_results")
         self.results_dir.mkdir(exist_ok=True)
         
-        # Initialize dataset
         self._discover_categories()
         
     def _discover_categories(self):
@@ -47,7 +43,6 @@ class RealWasteEDA:
         self.categories = []
         for item in self.dataset_path.iterdir():
             if item.is_dir() and not item.name.startswith('.'):
-                # Skip specific directories that aren't categories
                 if item.name not in ['eda_visualizations', 'image_analysis']:
                     self.categories.append(item.name)
         
@@ -91,18 +86,15 @@ class RealWasteEDA:
         print("CLASS DISTRIBUTION ANALYSIS")
         print("="*60)
         
-        # Create DataFrame for better analysis
         df = pd.DataFrame(list(category_counts.items()), columns=['Category', 'Count'])
         df = df.sort_values('Count', ascending=False)
         
-        # Basic statistics
         print(f"Mean images per class: {df['Count'].mean():.2f}")
         print(f"Median images per class: {df['Count'].median():.2f}")
         print(f"Standard deviation: {df['Count'].std():.2f}")
         print(f"Min images: {df['Count'].min()} ({df.loc[df['Count'].idxmin(), 'Category']})")
         print(f"Max images: {df['Count'].max()} ({df.loc[df['Count'].idxmax(), 'Category']})")
         
-        # Check for class imbalance
         imbalance_ratio = df['Count'].max() / df['Count'].min()
         print(f"\nClass Imbalance Ratio: {imbalance_ratio:.2f}")
         if imbalance_ratio > 2:
@@ -110,11 +102,9 @@ class RealWasteEDA:
         else:
             print("✅ Dataset is relatively balanced")
         
-        # Visualizations
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         fig.suptitle('Class Distribution Analysis', fontsize=16, fontweight='bold')
         
-        # Bar plot
         axes[0, 0].bar(range(len(df)), df['Count'], color=plt.cm.Set3(np.arange(len(df))))
         axes[0, 0].set_xlabel('Category')
         axes[0, 0].set_ylabel('Number of Images')
@@ -122,21 +112,17 @@ class RealWasteEDA:
         axes[0, 0].set_xticks(range(len(df)))
         axes[0, 0].set_xticklabels(df['Category'], rotation=45, ha='right')
         
-        # Add count labels on bars
         for i, (category, count) in enumerate(zip(df['Category'], df['Count'])):
             axes[0, 0].text(i, count + 5, str(count), ha='center', va='bottom')
         
-        # Pie chart
         axes[0, 1].pie(df['Count'], labels=df['Category'], autopct='%1.1f%%', startangle=90)
         axes[0, 1].set_title('Percentage Distribution')
         
-        # Horizontal bar plot (sorted)
         axes[1, 0].barh(df['Category'], df['Count'], color=plt.cm.Set3(np.arange(len(df))))
         axes[1, 0].set_xlabel('Number of Images')
         axes[1, 0].set_title('Images per Category (Sorted)')
         axes[1, 0].grid(axis='x', alpha=0.3)
         
-        # Box plot for distribution
         axes[1, 1].boxplot(df['Count'], labels=['All Categories'])
         axes[1, 1].set_ylabel('Number of Images')
         axes[1, 1].set_title('Distribution Statistics')
@@ -146,7 +132,6 @@ class RealWasteEDA:
         plt.savefig(self.results_dir / 'class_distribution.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        # Save detailed statistics
         with open(self.results_dir / 'class_statistics.json', 'w') as f:
             json.dump({
                 'category_counts': category_counts,
@@ -175,7 +160,6 @@ class RealWasteEDA:
                 
             image_files = list(category_path.glob("*.jpg")) + list(category_path.glob("*.png"))
             
-            # Sample images for analysis (to speed up processing)
             if len(image_files) > sample_size_per_class:
                 sample_files = np.random.choice(image_files, sample_size_per_class, replace=False)
             else:
@@ -185,21 +169,17 @@ class RealWasteEDA:
             
             for img_path in sample_files:
                 try:
-                    # Basic file info
-                    file_size = img_path.stat().st_size / (1024 * 1024)  # MB
+                    file_size = img_path.stat().st_size / (1024 * 1024)
                     
-                    # Image properties
                     with Image.open(img_path) as img:
                         width, height = img.size
                         format_type = img.format
                         mode = img.mode
                         
-                        # Color statistics
                         stat = ImageStat.Stat(img)
                         mean_colors = stat.mean
                         std_colors = stat.stddev
                     
-                    # Aspect ratio
                     aspect_ratio = width / height
                     
                     image_data.append({
@@ -219,14 +199,12 @@ class RealWasteEDA:
                     print(f"Error processing {img_path}: {e}")
                     continue
         
-        # Create DataFrame for analysis
         df_images = pd.DataFrame(image_data)
         
         if df_images.empty:
             print("No images could be processed!")
             return
         
-        # Basic statistics
         print(f"\nAnalyzed {len(df_images)} images total")
         print(f"Image dimensions range:")
         print(f"  Width: {df_images['width'].min()} - {df_images['width'].max()} pixels")
@@ -234,11 +212,9 @@ class RealWasteEDA:
         print(f"File size range: {df_images['file_size_mb'].min():.3f} - {df_images['file_size_mb'].max():.3f} MB")
         print(f"Aspect ratio range: {df_images['aspect_ratio'].min():.3f} - {df_images['aspect_ratio'].max():.3f}")
         
-        # Visualizations
         fig, axes = plt.subplots(3, 2, figsize=(15, 18))
         fig.suptitle('Image Properties Analysis', fontsize=16, fontweight='bold')
         
-        # Image dimensions scatter plot
         scatter = axes[0, 0].scatter(df_images['width'], df_images['height'], 
                                    c=pd.Categorical(df_images['category']).codes, 
                                    alpha=0.6, cmap='tab10')
@@ -247,7 +223,6 @@ class RealWasteEDA:
         axes[0, 0].set_title('Image Dimensions Distribution')
         axes[0, 0].grid(alpha=0.3)
         
-        # Aspect ratio distribution
         axes[0, 1].hist(df_images['aspect_ratio'], bins=30, alpha=0.7, color='skyblue', edgecolor='black')
         axes[0, 1].axvline(1.0, color='red', linestyle='--', label='Square (1:1)')
         axes[0, 1].axvline(4/3, color='orange', linestyle='--', label='4:3')
@@ -258,14 +233,12 @@ class RealWasteEDA:
         axes[0, 1].legend()
         axes[0, 1].grid(alpha=0.3)
         
-        # File size distribution
         axes[1, 0].hist(df_images['file_size_mb'], bins=30, alpha=0.7, color='lightgreen', edgecolor='black')
         axes[1, 0].set_xlabel('File Size (MB)')
         axes[1, 0].set_ylabel('Frequency')
         axes[1, 0].set_title('File Size Distribution')
         axes[1, 0].grid(alpha=0.3)
         
-        # Brightness distribution by category
         categories = df_images['category'].unique()
         for i, cat in enumerate(categories):
             cat_data = df_images[df_images['category'] == cat]['mean_brightness']
@@ -276,7 +249,6 @@ class RealWasteEDA:
         axes[1, 1].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         axes[1, 1].grid(alpha=0.3)
         
-        # Box plot of dimensions by category
         df_melted = pd.melt(df_images, id_vars=['category'], 
                           value_vars=['width', 'height'],
                           var_name='dimension', value_name='pixels')
@@ -286,7 +258,6 @@ class RealWasteEDA:
         axes[2, 0].set_title('Image Dimensions by Category')
         axes[2, 0].tick_params(axis='x', rotation=45)
         
-        # File format distribution
         format_counts = df_images['format'].value_counts()
         axes[2, 1].pie(format_counts.values, labels=format_counts.index, autopct='%1.1f%%')
         axes[2, 1].set_title('File Format Distribution')
@@ -295,7 +266,6 @@ class RealWasteEDA:
         plt.savefig(self.results_dir / 'image_properties.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        # Save detailed image statistics
         summary_stats = {
             'dimension_stats': {
                 'width': {
@@ -329,7 +299,6 @@ class RealWasteEDA:
         with open(self.results_dir / 'image_properties_stats.json', 'w') as f:
             json.dump(summary_stats, f, indent=2)
         
-        # Save the detailed DataFrame
         df_images.to_csv(self.results_dir / 'detailed_image_analysis.csv', index=False)
         
         return df_images
@@ -349,7 +318,6 @@ class RealWasteEDA:
                 
             image_files = list(category_path.glob("*.jpg")) + list(category_path.glob("*.png"))
             
-            # Sample images for analysis
             if len(image_files) > sample_size_per_class:
                 sample_files = np.random.choice(image_files, sample_size_per_class, replace=False)
             else:
@@ -359,22 +327,18 @@ class RealWasteEDA:
             
             for img_path in sample_files:
                 try:
-                    # Load image with OpenCV for color analysis
                     img = cv2.imread(str(img_path))
                     if img is None:
                         continue
                         
                     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                     
-                    # Calculate color statistics
                     mean_rgb = np.mean(img_rgb, axis=(0, 1))
                     std_rgb = np.std(img_rgb, axis=(0, 1))
                     
-                    # Convert to other color spaces for analysis
                     img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
                     mean_hsv = np.mean(img_hsv, axis=(0, 1))
                     
-                    # Calculate color diversity (number of unique colors)
                     unique_colors = len(np.unique(img_rgb.reshape(-1, 3), axis=0))
                     total_pixels = img_rgb.shape[0] * img_rgb.shape[1]
                     color_diversity = unique_colors / total_pixels
@@ -405,11 +369,9 @@ class RealWasteEDA:
         
         df_colors = pd.DataFrame(color_data)
         
-        # Visualizations
         fig, axes = plt.subplots(2, 3, figsize=(18, 12))
         fig.suptitle('Color Properties Analysis', fontsize=16, fontweight='bold')
         
-        # RGB mean values by category
         categories = df_colors['category'].unique()
         x_pos = np.arange(len(categories))
         
@@ -429,7 +391,6 @@ class RealWasteEDA:
         axes[0, 0].legend()
         axes[0, 0].grid(alpha=0.3)
         
-        # Brightness distribution by category
         for cat in categories:
             cat_brightness = df_colors[df_colors['category'] == cat]['brightness']
             axes[0, 1].hist(cat_brightness, alpha=0.6, label=cat, bins=15)
@@ -439,21 +400,18 @@ class RealWasteEDA:
         axes[0, 1].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         axes[0, 1].grid(alpha=0.3)
         
-        # Color diversity
         sns.boxplot(data=df_colors, x='category', y='color_diversity', ax=axes[0, 2])
         axes[0, 2].set_xlabel('Category')
         axes[0, 2].set_ylabel('Color Diversity')
         axes[0, 2].set_title('Color Diversity by Category')
         axes[0, 2].tick_params(axis='x', rotation=45)
         
-        # HSV analysis
         sns.scatterplot(data=df_colors, x='mean_h', y='mean_s', hue='category', ax=axes[1, 0])
         axes[1, 0].set_xlabel('Mean Hue')
         axes[1, 0].set_ylabel('Mean Saturation')
         axes[1, 0].set_title('Hue vs Saturation by Category')
         axes[1, 0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         
-        # Color variance (how much colors vary within images)
         df_colors['color_variance'] = (df_colors['std_r'] + df_colors['std_g'] + df_colors['std_b']) / 3
         sns.boxplot(data=df_colors, x='category', y='color_variance', ax=axes[1, 1])
         axes[1, 1].set_xlabel('Category')
@@ -461,7 +419,6 @@ class RealWasteEDA:
         axes[1, 1].set_title('Color Variance by Category')
         axes[1, 1].tick_params(axis='x', rotation=45)
         
-        # Overall color distribution in RGB space
         axes[1, 2].scatter(df_colors['mean_r'], df_colors['mean_g'], 
                           c=df_colors['mean_b'], s=50, alpha=0.6, cmap='viridis')
         axes[1, 2].set_xlabel('Mean Red')
@@ -474,7 +431,6 @@ class RealWasteEDA:
         plt.savefig(self.results_dir / 'color_analysis.png', dpi=300, bbox_inches='tight')
         plt.show()
         
-        # Save color statistics
         color_stats = {}
         for cat in categories:
             cat_data = df_colors[df_colors['category'] == cat]
@@ -513,12 +469,10 @@ class RealWasteEDA:
                 
             image_files = list(category_path.glob("*.jpg")) + list(category_path.glob("*.png"))
             
-            # Sample random images
             if len(image_files) >= samples_per_class:
                 sample_files = np.random.choice(image_files, samples_per_class, replace=False)
             else:
                 sample_files = image_files
-                # Fill remaining slots with existing images if needed
                 while len(sample_files) < samples_per_class:
                     sample_files = list(sample_files) + list(image_files)
                 sample_files = sample_files[:samples_per_class]
@@ -528,7 +482,7 @@ class RealWasteEDA:
                     img = Image.open(img_path)
                     axes[i, j].imshow(img)
                     axes[i, j].axis('off')
-                    if j == 0:  # Add category name to first image of each row
+                    if j == 0:
                         axes[i, j].set_title(f"{category}\n{img_path.name}", fontsize=10)
                     else:
                         axes[i, j].set_title(img_path.name, fontsize=8)
@@ -566,7 +520,6 @@ class RealWasteEDA:
             report.append(f"- **{category}**: {count} images ({percentage:.1f}%)")
         report.append("")
         
-        # Load additional statistics if available
         try:
             with open(self.results_dir / 'class_statistics.json', 'r') as f:
                 class_stats = json.load(f)
@@ -606,7 +559,6 @@ class RealWasteEDA:
         report.append("- `detailed_image_analysis.csv`: Detailed image metadata")
         report.append("- Various JSON files with statistical summaries")
         
-        # Save report
         report_text = "\n".join(report)
         with open(self.results_dir / 'EDA_Summary_Report.md', 'w') as f:
             f.write(report_text)
@@ -622,22 +574,16 @@ class RealWasteEDA:
         print("=" * 80)
         
         try:
-            # Step 1: Basic statistics
             category_counts = self.collect_basic_stats()
             
-            # Step 2: Class distribution analysis
             self.analyze_class_distribution(category_counts)
             
-            # Step 3: Image properties analysis
             self.analyze_image_properties(sample_size_per_class=30)
             
-            # Step 4: Color properties analysis
             self.analyze_color_properties(sample_size_per_class=15)
             
-            # Step 5: Sample images grid
             self.create_sample_images_grid(samples_per_class=4)
             
-            # Step 6: Generate summary report
             self.generate_summary_report()
             
             print("\n" + "="*80)
@@ -650,20 +596,16 @@ class RealWasteEDA:
             import traceback
             traceback.print_exc()
 
-
 def main():
     """Main function to run the EDA"""
-    # Dataset path
     dataset_path = Path(r"C:\Users\Z-BOOK\OneDrive\Documents\DATASETS\realwaste\RealWaste")
     
     if not dataset_path.exists():
         print(f"❌ Dataset path does not exist: {dataset_path}")
         return
     
-    # Initialize and run EDA
     eda = RealWasteEDA(dataset_path)
     eda.run_complete_analysis()
-
 
 if __name__ == "__main__":
     main()

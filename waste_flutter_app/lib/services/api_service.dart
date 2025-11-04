@@ -18,7 +18,7 @@ class ApiService {
   // 🔄 Switch between production and local
   // Set to true when releasing APK to users
   // Set to false when testing locally
-  static const bool USE_PRODUCTION = true; // ✅ Using production server!
+  static const bool USE_PRODUCTION = false; // 🏠 Using local server for testing!
   
   static String get baseUrl {
     // Use production URL if enabled
@@ -40,9 +40,9 @@ class ApiService {
   final http.Client _client = http.Client();
 
   /// Classify an image using MobileViT + GNN
-  Future<ClassificationResult> classifyImage(File imageFile) async {
+  Future<ClassificationResult> classifyImage(File imageFile, String userId) async {
     try {
-      _logger.i('Classifying image: ${imageFile.path}');
+      _logger.i('Classifying image: ${imageFile.path} for user: $userId');
 
       // Create multipart request
       final request = http.MultipartRequest(
@@ -54,6 +54,9 @@ class ApiService {
       request.files.add(
         await http.MultipartFile.fromPath('image', imageFile.path),
       );
+      
+      // Add user_id as a field
+      request.fields['user_id'] = userId;
 
       // Send request
       final streamedResponse = await request.send();
