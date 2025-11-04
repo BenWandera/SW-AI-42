@@ -173,10 +173,21 @@ def load_mobilevit_model(model_path: str = None):
                 logger.info(f"✅ Found model at: {model_path}")
                 break
         
+        # If model not found, try to download it
         if model_path is None:
-            logger.error("❌ Model file not found in any expected location!")
-            logger.error(f"   Searched: {possible_paths}")
-            return False
+            logger.warning("⚠️  Model file not found locally, attempting download...")
+            import urllib.request
+            download_url = "https://media.githubusercontent.com/media/BenWandera/SW-AI-42/main/api/best_mobilevit_waste_model.pth"
+            model_path = "best_mobilevit_waste_model.pth"
+            
+            try:
+                logger.info(f"📥 Downloading model from GitHub LFS...")
+                urllib.request.urlretrieve(download_url, model_path)
+                logger.info(f"✅ Model downloaded successfully!")
+            except Exception as e:
+                logger.error(f"❌ Failed to download model: {e}")
+                logger.error(f"   Searched: {possible_paths}")
+                return False
     
     try:
         logger.info(f"🔄 Loading MobileViT model from: {model_path}")
