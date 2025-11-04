@@ -26,12 +26,13 @@ COPY model_loader.py .
 COPY gnn_loader.py .
 COPY models.py .
 COPY download_model.py .
+COPY start.sh .
 
-# Copy trained model files (CRITICAL for real predictions!)
-COPY best_mobilevit_waste_model.pth ./best_mobilevit_waste_model.pth
+# Make start script executable
+RUN chmod +x start.sh
 
-# Download actual model file if the copied one is just a Git LFS pointer
-RUN python download_model.py || echo "Model download failed, will use mock mode"
+# Copy trained model files (will be Git LFS pointer, downloaded at runtime)
+COPY best_mobilevit_waste_model.pth ./best_mobilevit_waste_model.pth || echo "Model file not found, will download at runtime"
 
 # Create directories for model cache and uploads
 RUN mkdir -p /app/uploads /app/hf_cache /app/data
@@ -48,6 +49,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/').read()"
 
-# Run the API server
-# Use PORT environment variable from Crane Cloud
-CMD uvicorn real_api:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
+# Run the startup script (downloads model, then starts API)
+CMD ["./start.sh"]
