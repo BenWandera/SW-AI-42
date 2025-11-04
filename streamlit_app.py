@@ -12,9 +12,15 @@ import sys
 import os
 
 # Add api folder to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'api'))
+api_path = os.path.join(os.path.dirname(__file__), 'api')
+if os.path.exists(api_path):
+    sys.path.insert(0, api_path)
 
-from api.model_loader import load_trained_model
+# Import model loader
+try:
+    from model_loader import load_trained_model
+except ImportError:
+    from api.model_loader import load_trained_model
 
 st.set_page_config(
     page_title="EcoWaste AI - Waste Classifier",
