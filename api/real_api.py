@@ -369,6 +369,28 @@ async def root():
     }
 
 
+@app.get("/api/debug/files")
+async def debug_files():
+    """Debug endpoint to check what files exist in the container"""
+    import os
+    files_in_app = os.listdir("/app") if os.path.exists("/app") else []
+    files_in_current = os.listdir(".")
+    
+    model_checks = {
+        "best_mobilevit_waste_model.pth": os.path.exists("best_mobilevit_waste_model.pth"),
+        "/app/best_mobilevit_waste_model.pth": os.path.exists("/app/best_mobilevit_waste_model.pth"),
+        "../best_mobilevit_waste_model.pth": os.path.exists("../best_mobilevit_waste_model.pth"),
+    }
+    
+    return {
+        "current_directory": os.getcwd(),
+        "files_in_app_dir": files_in_app,
+        "files_in_current_dir": files_in_current,
+        "model_file_checks": model_checks,
+        "model_loaded": mobilevit_model is not None
+    }
+
+
 @app.get("/api/debug/users")
 async def debug_users():
     """Debug endpoint to see all users"""
