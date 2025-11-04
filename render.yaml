@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: SW-AI-42
+    env: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: PORT
+        value: 8000
