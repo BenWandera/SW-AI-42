@@ -25,9 +25,13 @@ COPY real_api.py .
 COPY model_loader.py .
 COPY gnn_loader.py .
 COPY models.py .
+COPY download_model.py .
 
 # Copy trained model files (CRITICAL for real predictions!)
 COPY best_mobilevit_waste_model.pth ./best_mobilevit_waste_model.pth
+
+# Download actual model file if the copied one is just a Git LFS pointer
+RUN python download_model.py || echo "Model download failed, will use mock mode"
 
 # Create directories for model cache and uploads
 RUN mkdir -p /app/uploads /app/hf_cache /app/data

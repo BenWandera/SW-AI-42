@@ -3,8 +3,10 @@ services:
     name: SW-AI-42
     env: docker
     dockerfilePath: ./api/Dockerfile
-    dockerContext: .
+    dockerContext: ./api
     plan: free
+    autoDeploy: true
+    buildCommand: echo "Building with Git LFS support"
     envVars:
       - key: ENVIRONMENT
         value: production
