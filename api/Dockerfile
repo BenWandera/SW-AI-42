@@ -15,22 +15,19 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
-COPY api/requirements.txt .
+COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY api/real_api.py .
-COPY api/model_loader.py .
-COPY api/gnn_loader.py .
-COPY api/models.py .
+COPY real_api.py .
+COPY model_loader.py .
+COPY gnn_loader.py .
+COPY models.py .
 
 # Copy trained model files (CRITICAL for real predictions!)
 COPY best_mobilevit_waste_model.pth ./best_mobilevit_waste_model.pth
-
-# Copy GNN model directory (optional but recommended)
-# COPY GNN\ model/ ./GNN_model/
 
 # Create directories for model cache and uploads
 RUN mkdir -p /app/uploads /app/hf_cache /app/data
